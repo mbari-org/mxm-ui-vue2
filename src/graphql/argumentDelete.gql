@@ -1,0 +1,17 @@
+mutation deleteArgument($input: DeleteArgumentInput!) {
+  deleteArgument(input: $input) {
+    argument {
+      missionId
+      providerId
+      missionTplId
+      paramName
+      paramValue
+    }
+  }
+}
+
+#variables: {
+#  "input": {
+#    "id": ""
+#  }
+#}

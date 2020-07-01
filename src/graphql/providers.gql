@@ -1,0 +1,9 @@
+query allProvidersList {
+  allProvidersList {
+    id
+    providerId
+    httpEndpoint
+    apiType
+    description
+  }
+}

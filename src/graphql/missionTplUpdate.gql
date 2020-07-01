@@ -1,0 +1,21 @@
+mutation updateMissionTpl($input: UpdateMissionTplInput!) {
+  updateMissionTpl(input: $input) {
+    missionTpl {
+      id
+      providerId
+      missionTplId
+      description
+      retrievedAt
+    }
+  }
+}
+
+# variables: {
+#  "input": {
+#    "id": "..",
+#    "missionTplPatch": {
+#      "description": "updated description ..."
+#      "missionTplId": ".."
+#    }
+#  }
+#}

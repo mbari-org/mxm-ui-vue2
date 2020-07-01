@@ -1,0 +1,17 @@
+query units($providerId: String!, $unitName: String!) {
+  unitByProviderIdAndUnitName(
+    providerId: $providerId
+    unitName: $unitName
+  ) {
+    id
+    providerId
+    unitName
+    abbreviation
+    baseUnit
+    unitsByProviderIdAndBaseUnitList {
+      unitName
+      abbreviation
+      baseUnit
+    }
+  }
+}

@@ -1,0 +1,31 @@
+query getMissionTpl($providerId: String!, $missionTplId: String!) {
+  missionTplByProviderIdAndMissionTplId(providerId: $providerId, missionTplId: $missionTplId) {
+    providerByProviderId {
+      descriptionFormat
+      usesUnits
+      usesSched
+      canReportMissionStatus
+    }
+    id
+    missionTplId
+    description
+    retrievedAt
+    missionTplAssetClassesByProviderIdAndMissionTplIdList {
+      id
+      assetClassName
+      assetClassByProviderIdAndAssetClassName {
+        description
+      }
+    }
+    parametersByProviderIdAndMissionTplIdList(orderBy: [PARAM_ORDER_ASC]) {
+      id
+      paramName
+      type
+      valueCanReference
+      required
+      defaultValue
+      defaultUnits
+      description
+    }
+  }
+}

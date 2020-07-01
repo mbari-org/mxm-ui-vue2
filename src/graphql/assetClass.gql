@@ -1,0 +1,18 @@
+query allAssetClassesList($providerId: String!, $className: String!) {
+  allAssetClassesList(condition: {
+    providerId:$providerId,
+    className: $className
+  }) {
+    id
+    providerId
+    providerByProviderId {
+      descriptionFormat
+    }
+    className
+    description
+    assetsByProviderIdAndClassNameList {
+      assetId
+      description
+    }
+  }
+}

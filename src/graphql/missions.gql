@@ -1,0 +1,20 @@
+query missions($providerId: String!) {
+  allMissionsList(condition: {
+    providerId: $providerId
+  }) {
+    id
+    providerId
+    missionTplByProviderIdAndMissionTplId {
+      providerByProviderId {
+        descriptionFormat
+      }
+    }
+    missionTplId
+    missionId
+    missionStatus
+    assetId
+    description
+    startDate
+    endDate
+  }
+}

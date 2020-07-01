@@ -1,0 +1,23 @@
+query providerApiTypes {
+  __type(name: "ProviderApiType") {
+    enumValues {
+      name
+    }
+  }
+}
+
+# response:
+#    {
+#      "data": {
+#        "__type": {
+#          "enumValues": [
+#            {
+#              "name": "REST0"
+#            },
+#            {
+#              "name": "GRAPHQL"
+#            }
+#          ]
+#        }
+#      }
+#    }

@@ -1,0 +1,30 @@
+#################################################################################
+# Copy the JSON contents below into a `config.json` file, which should be located
+# appropriately depending on how you will be running the application:
+#
+# - Docker release:    Put `config.json` under a directory of your choosing, which
+#                      you will indicate prior to running the mxm container.
+#
+# - Local development: Put `config.json` under `src/statics/config/`.
+#
+# Then edit `config.json` as needed:
+#
+# - graphqlUri:  (Required)
+#   Indicates the external URI of the MXM GraphQL endpoint.
+#   The default value here, "http://localhost:38080/mxm-graphql", is just intended
+#   for basic local testing using the dockerized package.
+#
+# - learnMoreUrl: (Optional)
+#   If defined, a corresponding link will be included at the top of the app.
+#
+# - googleApiKey: (Optional)
+#   If defined and properly configured, some Google Map base layers will be
+#   available for selection for the map.
+#
+#################################################################################
+
+{
+  "graphqlUri": "http://localhost:38080/mxm-graphql",
+  "learnMoreUrl": ...,
+  "googleApiKey": ...
+}

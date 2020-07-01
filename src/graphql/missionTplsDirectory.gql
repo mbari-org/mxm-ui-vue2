@@ -1,0 +1,19 @@
+query missionTplsDirectory($providerId: String!, $directory: String!) {
+  listMissionTplsDirectoryList(providerId: $providerId, directory: $directory) {
+    id
+    providerId
+    providerByProviderId {
+      descriptionFormat
+    }
+    missionTplId
+    description
+    missionTplAssetClassesByProviderIdAndMissionTplIdList {
+      assetClassName
+      assetClassByProviderIdAndAssetClassName {
+        assetsByProviderIdAndClassNameList {
+          assetId
+        }
+      }
+    }
+  }
+}

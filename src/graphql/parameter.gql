@@ -1,0 +1,23 @@
+query parameterByProviderIdAndMissionTplIdAndParamName($providerId: String!, $missionTplId: String!, $paramName: String!) {
+  parameterByProviderIdAndMissionTplIdAndParamName(
+    providerId: $providerId,
+    missionTplId: $missionTplId,
+    paramName: $paramName
+  ) {
+    id
+    providerId
+    missionTplByProviderIdAndMissionTplId {
+      providerByProviderId {
+        descriptionFormat
+      }
+    }
+    missionTplId
+    paramName
+    type
+    required
+    defaultValue
+    defaultUnits
+    valueCanReference
+    description
+  }
+}

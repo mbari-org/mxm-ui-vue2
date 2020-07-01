@@ -1,0 +1,32 @@
+mutation createMission($input: CreateMissionInput!) {
+  createMission(input: $input) {
+    mission {
+      providerId
+      missionTplId
+      missionId
+      missionStatus
+      assetId
+      description
+      schedType
+      schedDate
+      startDate
+      endDate
+    }
+  }
+}
+
+#    {
+#      "input": {
+#        "mission": {
+#          "providerId": "x1",
+#          "missionTplId": "tft",
+#          "missionId": "m1",
+#          "assetId": "tiny",
+#          "description": "foo",
+#          "schedType": "ASAP",
+#          "schedDate": null,
+#          "startDate": "-30m",
+#          "missionStatus": "DRAFT"
+#        }
+#      }
+#    }

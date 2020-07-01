@@ -1,0 +1,46 @@
+query mission($providerId: String!, $missionTplId: String!, $missionId: String!) {
+  missionByProviderIdAndMissionTplIdAndMissionId(
+    providerId: $providerId,
+    missionTplId: $missionTplId,
+    missionId: $missionId
+  ) {
+    id
+    providerId
+    missionTplId
+    missionId
+    missionStatus
+    assetId
+    schedType
+    schedDate
+    assetByProviderIdAndAssetId {
+      className
+    }
+    description
+    argumentsByProviderIdAndMissionTplIdAndMissionIdList {
+      id
+      paramName
+      paramValue
+      paramUnits
+    }
+    missionTplByProviderIdAndMissionTplId {
+      providerByProviderId {
+        httpEndpoint
+        apiType
+        canValidate
+        usesSched
+        usesUnits
+        canReportMissionStatus
+        descriptionFormat
+      }
+      parametersByProviderIdAndMissionTplIdList(orderBy: [PARAM_ORDER_ASC]) {
+        paramName
+        type
+        valueCanReference
+        required
+        defaultValue
+        defaultUnits
+        description
+      }
+    }
+  }
+}

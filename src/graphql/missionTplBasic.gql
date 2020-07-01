@@ -1,0 +1,7 @@
+query getMissionTplBasic($providerId: String!, $missionTplId: String!) {
+  missionTplByProviderIdAndMissionTplId(providerId: $providerId, missionTplId: $missionTplId) {
+    id
+    missionTplId
+    retrievedAt
+  }
+}

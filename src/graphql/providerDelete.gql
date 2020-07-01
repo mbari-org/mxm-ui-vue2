@@ -1,0 +1,16 @@
+mutation deleteProvider($input: DeleteProviderInput!) {
+  deleteProvider(input: $input) {
+    provider {
+      id
+      providerId
+      httpEndpoint
+      description
+    }
+  }
+}
+
+#{
+#  "input": {
+#    "id": "WyJleGVjdXRvcnMiLCJ4MSJd"
+#  }
+#}
