@@ -139,20 +139,32 @@
         ],
       },
 
-      // $subscribe: {
-      //   providerCreated: {
-      //     query: providerCreatedGql,
-      //     result ({ data }) {
-      //       console.warn('providerCreated', data)
-      //     },
-      //   },
-      //   providerDeletedGql: {
-      //     query: providerDeletedGql,
-      //     result ({ data }) {
-      //       console.warn('providerDeleted', data)
-      //     },
-      //   },
-      // },
+      $subscribe: {
+        providerCreated: {
+          query: providerCreatedGql,
+          result ({ data }) {
+            console.warn('providerCreated', data)
+            this.$q.notify({
+              color: 'positive',
+              position: 'bottom-right',
+              textColor: 'white',
+              message: 'Provider created: ' + data.providerCreated.providerId
+            })
+          },
+        },
+        providerDeletedGql: {
+          query: providerDeletedGql,
+          result ({ data }) {
+            console.warn('providerDeleted', data)
+            this.$q.notify({
+              color: 'negative',
+              position: 'bottom-right',
+              textColor: 'white',
+              message: 'Provider deleted: ' + data.providerDeleted.providerId
+            })
+          },
+        },
+      },
     },
 
     methods: {
