@@ -1,0 +1,24 @@
+.env
+webapp/src/statics/config/config.json
+webapp/test/jest/coverage
+webapp/.quasar
+docker/config/config.json
+docker/db_data*/
+.DS_Store
+.thumbs.db
+node_modules
+dist/
+/src-cordova/platforms
+/src-cordova/plugins
+/src-cordova/www
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
