@@ -1,13 +1,8 @@
-query missions($providerId: String!) {
-  allMissionsList(condition: {
-    providerId: $providerId
-  }) {
-    id
+query missionsForProvider($providerId: String!) {
+  missionsForProvider(providerId: $providerId) {
     providerId
-    missionTplByProviderIdAndMissionTplId {
-      providerByProviderId {
-        descriptionFormat
-      }
+    provider {
+      descriptionFormat
     }
     missionTplId
     missionId

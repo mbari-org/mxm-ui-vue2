@@ -1,6 +1,5 @@
-query allProvidersList {
-  allProvidersList {
-    id
+query allProviders {
+  allProviders {
     providerId
     httpEndpoint
     apiType

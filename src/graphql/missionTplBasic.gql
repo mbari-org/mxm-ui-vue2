@@ -1,6 +1,5 @@
 query getMissionTplBasic($providerId: String!, $missionTplId: String!) {
-  missionTplByProviderIdAndMissionTplId(providerId: $providerId, missionTplId: $missionTplId) {
-    id
+  missionTemplate(providerId: $providerId, missionTplId: $missionTplId) {
     missionTplId
     retrievedAt
   }

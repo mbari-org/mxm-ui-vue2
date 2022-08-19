@@ -1,14 +1,14 @@
 <template>
   <q-page class="q-pa-md">
     <q-table
-      :data="allMissionsList"
+      :data="missionsForProvider"
       :columns="columns"
       row-key="name"
       :rows-per-page-options="rowsPerPage"
       :pagination.sync="pagination"
       :filter="filter"
       separator="cell"
-      no-data-label="No missions defined"
+      no-data-label="No missions defined or exposed by this provider"
     >
       <div slot="top-left" slot-scope="props" class="row items-center">
         <div class="col-auto text-h5">
@@ -17,7 +17,7 @@
 
         <div class="q-ml-md row">
           <q-input
-            v-if="allMissionsList.length"
+            v-if="missionsForProvider.length"
             class="col"
             color="secondary"
             v-model="filter"
@@ -72,7 +72,7 @@
         <mxm-markdown
           expandable :expandable-subtitle-limit="50"
           simple hide-empty :text="props.value"
-          :start-markdown="props.row.missionTplByProviderIdAndMissionTplId.providerByProviderId.descriptionFormat === 'markdown'"
+          :start-markdown="props.row.provider.descriptionFormat === 'markdown'"
         />
       </q-td>
 
@@ -100,7 +100,7 @@
 
     data() {
       return {
-        allMissionsList: [],
+        missionsForProvider: [],
         columns: [
           {
             field: 'missionId',
@@ -153,7 +153,7 @@
     },
 
     apollo: {
-      allMissionsList: {
+      missionsForProvider: {
         query: allMissionsListGql,
         variables() {
           return {
@@ -162,7 +162,7 @@
         },
         update(data) {
           if (debug) console.log('update: data=', data)
-          return data.allMissionsList && data.allMissionsList || []
+          return data.missionsForProvider || []
         },
       },
     },
@@ -179,8 +179,8 @@
       },
 
       refreshMissions() {
-        if (this.$apollo.queries.allMissionsList) {
-          this.$apollo.queries.allMissionsList.refetch()
+        if (this.$apollo.queries.missionsForProvider) {
+          this.$apollo.queries.missionsForProvider.refetch()
         }
       },
 

@@ -1,49 +1,53 @@
 <template>
   <div>
-    <pre v-if="false">missionTplBasic={{missionTplBasic}}</pre>
+    <pre v-if="true">missionTplBasic={{missionTplBasic}}</pre>
 
-    <div class="row q-mb-sm items-center">
-      <q-icon
-        name="far fa-folder"
-        size="16px"
-        class="q-mr-xs"
-      />
-      <div style="font-size:large">{{ directory }}</div>
-      <div
-        v-if="missionTplBasic && missionTplBasic.retrievedAt"
-        class="q-ml-lg text-grey" style="font-size:smaller"
-      >
-        {{ missionTplBasic.retrievedAt }}
-        <q-tooltip>Time when this template listing was last retrieved from the provider</q-tooltip>
+    <div class="row items-center q-mb-sm">
+      <div class="col-auto text-h5">
+        Mission templates
+      </div>
+
+      <div class="q-ml-md row">
+        <q-input
+          :disable="!listMissionTplsDirectory || !listMissionTplsDirectory.length"
+          class="col"
+          color="secondary"
+          v-model="filter"
+          placeholder="Filter"
+          clearable
+        />
       </div>
     </div>
 
-    <div v-if="allMissionTplsList">
+    <div>
       <q-table
-        :data="sortedAllMissionTplsList"
+        :data="sortedAllMissionTplsList || []"
         :columns="missionTplColumns"
         row-key="name"
         :rows-per-page-options="rowsPerPage"
         :pagination.sync="pagination"
         :filter="filter"
         separator="cell"
-        no-data-label="No mission templates defined"
+        :no-data-label="updating ? 'Updating ...' : 'No mission templates defined'"
       >
         <div slot="top-left" slot-scope="props" class="row items-center">
-          <div class="col-auto text-h5">
-            Mission templates
+          <div class="row q-mb-sm items-center">
+            <q-icon
+              name="far fa-folder"
+              size="16px"
+              class="q-mr-xs"
+            />
+            <div style="font-size:large">{{ directory }}</div>
+            <div
+              v-if="missionTplBasic && missionTplBasic.retrievedAt"
+              class="q-ml-lg text-grey" style="font-size:smaller"
+            >
+              {{ missionTplBasic.retrievedAt }}
+              <q-tooltip>Time when this template listing was last retrieved from the provider</q-tooltip>
+            </div>
           </div>
 
-          <div class="q-ml-md row">
-            <q-input
-              v-if="allMissionTplsList.length"
-              class="col"
-              color="secondary"
-              v-model="filter"
-              placeholder="Filter"
-              clearable
-            />
-          </div>
+
         </div>
 
         <q-td slot="body-cell-missionTplId" slot-scope="props" :props="props"
@@ -70,15 +74,18 @@
             expandable :expandable-subtitle-limit="80"
             simple hide-empty
             :text="props.value"
-            :start-markdown="props.row.providerByProviderId.descriptionFormat === 'markdown'"
+            :start-markdown="props.row.provider.descriptionFormat === 'markdown'"
           />
         </q-td>
 
       </q-table>
     </div>
 
-    <div v-else-if="!loading">
-      Provider not found: {{params.providerId}}
+    <div v-if="updating">
+      Updating ...
+    </div>
+    <div v-else-if="!listMissionTplsDirectory">
+      Not found: {{params.missionTplId}}
     </div>
 
   </div>
@@ -91,15 +98,15 @@
 
   import orderBy from "lodash/orderBy"
 
-  const debug = false
+  const debug = true
 
   export default {
     data() {
       return {
         debug,
-        loading: false,
+        updating: false,
         missionTplBasic: null,
-        allMissionTplsList: [],
+        listMissionTplsDirectory: null,
 
         missionTplColumns: [
           {
@@ -137,7 +144,27 @@
       },
 
       sortedAllMissionTplsList() {
-        return orderBy(this.allMissionTplsList, mt => mt.missionTplId.endsWith('/') ? 1 : 0)
+        return this.listMissionTplsDirectory &&
+          orderBy(this.listMissionTplsDirectory, mt => mt.missionTplId.endsWith('/') ? 1 : 0)
+      },
+
+      skipMissionTplsListQuery() {
+        if (!this.missionTplBasic) {
+          return true
+        }
+        else if (this.missionTplBasic.retrievedAt) {
+          return false
+        }
+        else {
+          return true
+        }
+      },
+
+      allMissionTplsListVariables() {
+        return {
+          providerId: this.params.providerId,
+          directory: this.directory,
+        }
       },
     },
 
@@ -151,35 +178,25 @@
           }
         },
         update(data) {
-          if (debug) console.log('missionTplBasicGql update: data=', data)
-          return data.missionTplByProviderIdAndMissionTplId || {}
+          /*if (debug)*/ console.debug('missionTplBasicGql update: data=', data)
+          return data.missionTemplate || {}
         },
       },
 
-      allMissionTplsList: {
+      listMissionTplsDirectory: {
         skip () {
-          if (!this.missionTplBasic) {
-            return true
-          }
-          else if (this.missionTplBasic.retrievedAt) {
-            return false
-          }
-          else {
-            // trigger reload so retrievedAt is first set
-            this.reloadMissionTpls()
-            return true
-          }
+          return this.skipMissionTplsListQuery
         },
         query: missionTplsDirectoryGql,
         variables() {
-          return {
-            providerId: this.params.providerId,
-            directory: this.directory,
-          }
+          return this.allMissionTplsListVariables
         },
         update(data) {
-          /*if (debug)*/ console.log('update: data=', data)
-          return data.listMissionTplsDirectoryList && data.listMissionTplsDirectoryList || []
+          /*if (debug)*/ console.debug('listMissionTplsDirectory update: data=', data)
+          return data.listMissionTplsDirectory
+        },
+        error(error) {
+          /*if (debug)*/ console.debug('listMissionTplsDirectory error=', error)
         },
       },
     },
@@ -197,18 +214,27 @@
       },
 
       async refreshMissionTpls() {
+        console.debug('refreshMissionTpls')
+
         // conditional refetch calls needed to avoid 'TypeError: Cannot read property 'refetch' of undefined'
         // apparently upon very first request from the "immediate" watch below.
         // See https://github.com/vuejs/vue-apollo/issues/880
 
-        if (this.$apollo.queries.missionTplBasic) {
-          await this.$apollo.queries.missionTplBasic.refetch()
+        const doIt = async () => {
+          if (this.$apollo.queries.missionTplBasic && this.$apollo.queries.listMissionTplsDirectory) {
+            console.debug('refreshMissionTpls: missionTplBasic')
+            this.$apollo.queries.missionTplBasic.refetch()
 
-          if (this.$apollo.queries.allMissionTplsList) {
-            // console.debug('refreshMissionTpls: directory=', this.directory)
-            this.$apollo.queries.allMissionTplsList.refetch()
+            console.debug('refreshMissionTpls: directory=', this.directory)
+            this.$apollo.queries.listMissionTplsDirectory.refetch()
+          }
+          else {
+            console.warn('refreshMissionTpls: waiting for queries to be defined')
+            setTimeout(doIt, 500)
           }
         }
+
+        await doIt()
       },
 
       async reloadMissionTpls() {
@@ -228,18 +254,12 @@
       },
 
       async updateMissionTplBasic() {
-        const id = this.missionTplBasic && this.missionTplBasic.id
-        if (!id) {
-          // TODO handing this root directory case.
-          return
-        }
-
         if (debug) console.debug('updateMissionTplBasic')
         const mutation = missionTplUpdateGql
         const variables = {
-          input: {
-            id: this.missionTplBasic.id,
-            missionTplPatch: {}  // required but unused
+          pl: {
+            providerId: this.params.providerId,
+            missionTplId: this.directory
           }
         }
         try {
@@ -256,16 +276,35 @@
           console.error('updateMissionTplBasic: mutation error=', error)
         }
       },
+
+      routePathChanged(path) {
+        console.warn(`routePathChanged=`, path)
+        this.setBreadcrumbs()
+        this.listMissionTplsDirectory = null
+        if (!this.updating) {
+          this.updating = true
+          setTimeout( async () => {
+            try {
+              if (this.missionTplBasic && !this.missionTplBasic.retrievedAt) {
+                await this.reloadMissionTpls()
+              }
+              else {
+                await this.refreshMissionTpls()
+              }
+            }
+            finally {
+              this.updating = false
+            }
+          }, 777)
+        }
+      },
     },
 
     watch: {
-      params: {
-        handler(val) {
-          console.warn(`WATCH params=`, val)
-          this.setBreadcrumbs()
-          this.refreshMissionTpls()
+      '$route.path': {
+        handler(path) {
+          this.routePathChanged(path)
         },
-        deep: true,
         immediate: true,
       },
     },

@@ -7,6 +7,7 @@
     :pagination.sync="pagination"
     :filter="filter"
     separator="cell"
+    no-data-label="No units found"
   >
     <div slot="top-left" slot-scope="props" class="row items-center">
       <div class="col-auto text-h5">

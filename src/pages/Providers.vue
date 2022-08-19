@@ -1,7 +1,7 @@
 <template>
   <q-page class="q-pa-md">
     <q-table
-      :data="allProvidersList"
+      :data="allProviders"
       :columns="columns"
       row-key="name"
       :rows-per-page-options="rowsPerPage"
@@ -53,7 +53,7 @@
 </template>
 
 <script>
-  import allProvidersListGql from '../graphql/providers.gql'
+  import allProvidersGql from '../graphql/providers.gql'
   import providerDeleteGql from '../graphql/providerDelete.gql'
 
   import ProviderNewButton from 'components/provider-new-button'
@@ -67,7 +67,7 @@
 
     data() {
       return {
-        allProvidersList: [],
+        allProviders: [],
         columns: [
           {
             field: 'providerId',
@@ -112,7 +112,7 @@
     },
 
     apollo: {
-      allProvidersList: allProvidersListGql,
+      allProviders: allProvidersGql,
     },
 
     methods: {
@@ -124,8 +124,8 @@
       },
 
       refreshProviders() {
-        if (this.$apollo.queries.allProvidersList) {
-          this.$apollo.queries.allProvidersList.refetch()
+        if (this.$apollo.queries.allProviders) {
+          this.$apollo.queries.allProviders.refetch()
         }
       },
 
@@ -149,8 +149,8 @@
       doDeleteProvider(row) {
         const mutation = providerDeleteGql
         const variables = {
-          input: {
-            id: row.id
+          pl: {
+            providerId: row.providerId,
           }
         }
         this.$apollo.mutate({mutation, variables})

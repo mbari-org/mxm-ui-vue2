@@ -1,8 +1,5 @@
 query provider($providerId: String!) {
-  allProvidersList(condition: {
-    providerId: $providerId
-  }) {
-    id
+  provider(providerId: $providerId) {
     providerId
     httpEndpoint
     apiType
@@ -11,29 +8,26 @@ query provider($providerId: String!) {
     usesUnits
     usesSched
     descriptionFormat
-    missionTplsByProviderIdList {
-      id
+    missionTemplates {
       missionTplId
       description
-      missionTplAssetClassesByProviderIdAndMissionTplIdList {
-        assetClassName
-        assetClassByProviderIdAndAssetClassName {
-          assetsByProviderIdAndClassNameList {
-            assetId
-          }
+      assetClasses {
+        className
+        assets {
+          assetId
         }
       }
-      missionsByProviderIdAndMissionTplIdList {
+      missions {
         missionId
       }
     }
-    assetClassesByProviderIdList {
+    assetClasses {
       className
-      assetsByProviderIdAndClassNameList {
+      assets {
         assetId
       }
     }
-    unitsByProviderIdList {
+    units {
       unitName
     }
   }

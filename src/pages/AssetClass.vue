@@ -12,7 +12,7 @@
         <q-card-section>
           <mxm-markdown
             :text="assetClass.description"
-            :start-markdown="assetClass.providerByProviderId.descriptionFormat === 'markdown'"
+            :start-markdown="assetClass.provider.descriptionFormat === 'markdown'"
           />
         </q-card-section>
       </q-card>
@@ -59,7 +59,7 @@
         >
           <mxm-markdown
             simple hide-empty :text="props.value"
-            :start-markdown="assetClass.providerByProviderId.descriptionFormat === 'markdown'"
+            :start-markdown="assetClass.provider.descriptionFormat === 'markdown'"
           />
         </q-td>
       </q-table>
@@ -112,7 +112,7 @@
       },
 
       myAssets() {
-        const list = this.assetClass && this.assetClass.assetsByProviderIdAndClassNameList || []
+        const list = this.assetClass && this.assetClass.assets || []
         return list
       },
     },
@@ -128,10 +128,7 @@
         },
         update(data) {
           if (debug) console.log('update: data=', data)
-          if (data.allAssetClassesList && data.allAssetClassesList.length) {
-            return data.allAssetClassesList[0]
-          }
-          else return null
+          return data.assetClass
         },
       },
     },

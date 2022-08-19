@@ -34,7 +34,7 @@ const actions = {
             },
           })
             .then(res => {
-              const units = res.data.allUnitsList
+              const units = res.data.unitsForProvider
               if (debug) console.log('UNITS=', units)
               commit('setUnitsForProvider', {providerId, units})
               resolve(units)

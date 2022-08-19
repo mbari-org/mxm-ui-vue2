@@ -119,11 +119,12 @@
 </template>
 
 <script>
-  import providerGql from '../graphql/provider.gql'
+import providerGql from '../graphql/provider.gql'
 
-  import reduce from 'lodash/reduce'
+import reduce from 'lodash/reduce'
+import size from 'lodash/size'
 
-  const debug = window.location.search.match(/.*debug=.*provider.*/)
+const debug = window.location.search.match(/.*debug=.*provider.*/)
 
   export default {
     data: () => ({
@@ -137,8 +138,8 @@
       },
 
       numMissionTemplates() {
-        if (this.provider) {
-          const all = this.provider.missionTplsByProviderIdList
+        if (this.provider && size(this.provider.missionTemplates)) {
+          const all = this.provider.missionTemplates
           const actualTemplates = all.filter(mt => !mt.missionTplId.endsWith('/'))
           return actualTemplates.length
         }
@@ -147,15 +148,15 @@
 
       numAssetClasses() {
         if (this.provider) {
-          return this.provider.assetClassesByProviderIdList.length
+          return size(this.provider.assetClasses)
         }
         else return 0
       },
 
       numAssets() {
         if (this.provider) {
-          return reduce(this.provider.assetClassesByProviderIdList,
-                  (result, assetClass) => result + assetClass.assetsByProviderIdAndClassNameList.length,
+          return reduce(this.provider.assetClasses,
+                  (result, assetClass) => result + size(assetClass.assets),
                   0
           )
         }
@@ -164,15 +165,15 @@
 
       numUnits() {
         if (this.provider) {
-          return this.provider.unitsByProviderIdList.length
+          return size(this.provider.units)
         }
         else return 0
       },
 
       numMissions() {
         if (this.provider) {
-          return reduce(this.provider.missionTplsByProviderIdList,
-                  (result, missionTemplate) => result + missionTemplate.missionsByProviderIdAndMissionTplIdList.length,
+          return reduce(this.provider.missionTemplates,
+                  (result, missionTemplate) => result + size(missionTemplate.missions),
                   0
           )
         }
@@ -190,11 +191,7 @@
         },
         update(data) {
           if (debug) console.log('update: data=', data)
-          let provider = null
-          if (data.allProvidersList && data.allProvidersList.length) {
-            provider = data.allProvidersList[0]
-          }
-          return provider
+          return data.provider || null
         },
       },
     },

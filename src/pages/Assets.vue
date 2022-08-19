@@ -1,7 +1,7 @@
 <template>
   <q-page class="q-pa-md">
     <q-table
-      :data="allAssetsList"
+      :data="assetsForProvider"
       :columns="columns"
       row-key="assetId"
       :rows-per-page-options="rowsPerPage"
@@ -17,7 +17,7 @@
 
         <div class="q-ml-md row">
           <q-input
-            v-if="allAssetsList.length"
+            v-if="assetsForProvider.length"
             class="col"
             color="secondary"
             v-model="filter"
@@ -54,7 +54,7 @@
       >
         <mxm-markdown
           simple hide-empty :text="props.value"
-          :start-markdown="props.row.assetClassByProviderIdAndClassName.providerByProviderId.descriptionFormat === 'markdown'"
+          :start-markdown="props.row.provider.descriptionFormat === 'markdown'"
         />
       </q-td>
 
@@ -70,7 +70,7 @@
   export default {
     data() {
       return {
-        allAssetsList: [],
+        assetsForProvider: [],
         columns: [
           {
             field: 'assetId',
@@ -109,7 +109,7 @@
     },
 
     apollo: {
-      allAssetsList: {
+      assetsForProvider: {
         query: allAssetsListGql,
         variables() {
           return {
@@ -118,7 +118,7 @@
         },
         update(data) {
           if (debug) console.log('update: data=', data)
-          return data.allAssetsList || []
+          return data.assetsForProvider || []
         },
       },
     },
@@ -135,8 +135,8 @@
       },
 
       refreshAssets() {
-        if (this.$apollo.queries.allAssetsList) {
-          this.$apollo.queries.allAssetsList.refetch()
+        if (this.$apollo.queries.assetsForProvider) {
+          this.$apollo.queries.assetsForProvider.refetch()
         }
       },
     },

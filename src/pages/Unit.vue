@@ -65,7 +65,7 @@
       },
 
       derivedUnits() {
-        const list = this.unit && this.unit.unitsByProviderIdAndBaseUnitList || []
+        const list = this.unit && this.unit.derivedUnits || []
         return list
       },
     },
@@ -82,8 +82,8 @@
         update(data) {
           let res = null
           if (debug) console.debug('update: data=', data)
-          if (data.unitByProviderIdAndUnitName) {
-            res = data.unitByProviderIdAndUnitName
+          if (data.unit) {
+            res = data.unit
           }
           return res
         },

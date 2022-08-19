@@ -1,16 +1,12 @@
-query allAssetClassesList($providerId: String!, $className: String!) {
-  allAssetClassesList(condition: {
-    providerId:$providerId,
-    className: $className
-  }) {
-    id
+query assetClass($providerId: String!, $className: String!) {
+  assetClass(providerId:$providerId, className: $className) {
     providerId
-    providerByProviderId {
+    provider {
       descriptionFormat
     }
     className
     description
-    assetsByProviderIdAndClassNameList {
+    assets {
       assetId
       description
     }

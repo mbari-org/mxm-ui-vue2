@@ -1,8 +1,5 @@
-query allUnitsList($providerId: String!) {
-  allUnitsList(condition: {
-    providerId: $providerId
-  }) {
-    id
+query unitsForProvider($providerId: String!) {
+  unitsForProvider(providerId: $providerId) {
     providerId
     unitName
     abbreviation

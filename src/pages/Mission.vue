@@ -34,7 +34,7 @@
                   >
                     {{ mission.assetId }}
                     <q-tooltip>
-                      {{ mission.assetByProviderIdAndAssetId.className }}
+                      {{ mission.asset.className }}
                     </q-tooltip>
                   </router-link>
                 </div>
@@ -43,7 +43,7 @@
             <mxm-markdown
               expandable expandable-title="Description:"
               :text="mission.description"
-              :start-markdown="mission.missionTplByProviderIdAndMissionTplId.providerByProviderId.descriptionFormat === 'markdown'"
+              :start-markdown="mission.provider.descriptionFormat === 'markdown'"
               :editable="editable()"
               @saveDescription="updateDescription"
             />
@@ -79,7 +79,7 @@
 
       <div class="row q-mb-sm q-gutter-x-lg">
         <q-btn
-          v-if="mission.missionTplByProviderIdAndMissionTplId.providerByProviderId.canValidate"
+          v-if="mission.provider.canValidate"
           label="Validate"
           icon="check"
           push color="secondary"
@@ -270,7 +270,7 @@
           >
             <mxm-markdown
               simple hide-empty :text="props.row.description"
-              :start-markdown="mission.missionTplByProviderIdAndMissionTplId.providerByProviderId.descriptionFormat === 'markdown'"
+              :start-markdown="mission.provider.descriptionFormat === 'markdown'"
             />
           </q-td>
         </q-tr>
@@ -434,12 +434,12 @@
           if (debug) console.debug('update: data=', data)
           let mission = null
 
-          if (data.missionByProviderIdAndMissionTplIdAndMissionId) {
-            mission = data.missionByProviderIdAndMissionTplIdAndMissionId
+          if (data.mission) {
+            mission = data.mission
 
             if (debug) console.log(`schedType=${mission.schedType} schedDate=${mission.schedDate}`)
 
-            this.provider = mission.missionTplByProviderIdAndMissionTplId.providerByProviderId
+            this.provider = mission.provider
           }
           this.setMyArgumentsFromSaved(mission)
           this.loading = false
@@ -479,8 +479,8 @@
 
       setMyArgumentsFromSaved(mission) {
         if (debug) console.debug('setMyArgumentsFromSaved mission=', mission)
-        const alreadySavedArgs = get(mission, 'argumentsByProviderIdAndMissionTplIdAndMissionIdList') || []
-        const parameters = get(mission, 'missionTplByProviderIdAndMissionTplId.parametersByProviderIdAndMissionTplIdList') || []
+        const alreadySavedArgs = get(mission, 'arguments') || []
+        const parameters = get(mission, 'missionTemplate.parameters') || []
 
         if (debug) console.debug('alreadySavedArgs=', alreadySavedArgs)
 
@@ -548,7 +548,7 @@
 
         this.savingArgs = true
 
-        const alreadySavedArgs = get(this.mission, 'argumentsByProviderIdAndMissionTplIdAndMissionIdList') || []
+        const alreadySavedArgs = get(this.mission, 'arguments') || []
         if (debug) console.debug('saveArguments: alreadySavedArgs=', alreadySavedArgs)
 
         let numInserted = 0

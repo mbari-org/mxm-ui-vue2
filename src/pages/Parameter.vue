@@ -96,7 +96,7 @@
                   <mxm-markdown
                     style="min-height:4em;min-width:24em"
                     :text="parameter.description"
-                    :start-markdown="parameter.missionTplByProviderIdAndMissionTplId.providerByProviderId.descriptionFormat === 'markdown'"
+                    :start-markdown="parameter.provider.descriptionFormat === 'markdown'"
                   />
                 </div>
               </div>
@@ -152,8 +152,8 @@
         },
         update(data) {
           let parameter = null
-          if (data.parameterByProviderIdAndMissionTplIdAndParamName) {
-            parameter = data.parameterByProviderIdAndMissionTplIdAndParamName
+          if (data.parameter) {
+            parameter = data.parameter
           }
           if (debug) console.log('update: parameter=', parameter)
           parameter.withUnits = !!parameter.defaultUnits

@@ -1,10 +1,5 @@
 query mission($providerId: String!, $missionTplId: String!, $missionId: String!) {
-  missionByProviderIdAndMissionTplIdAndMissionId(
-    providerId: $providerId,
-    missionTplId: $missionTplId,
-    missionId: $missionId
-  ) {
-    id
+  mission(providerId: $providerId, missionTplId: $missionTplId, missionId: $missionId) {
     providerId
     missionTplId
     missionId
@@ -12,27 +7,26 @@ query mission($providerId: String!, $missionTplId: String!, $missionId: String!)
     assetId
     schedType
     schedDate
-    assetByProviderIdAndAssetId {
+    asset {
       className
     }
     description
-    argumentsByProviderIdAndMissionTplIdAndMissionIdList {
-      id
+    arguments {
       paramName
       paramValue
       paramUnits
     }
-    missionTplByProviderIdAndMissionTplId {
-      providerByProviderId {
-        httpEndpoint
-        apiType
-        canValidate
-        usesSched
-        usesUnits
-        canReportMissionStatus
-        descriptionFormat
-      }
-      parametersByProviderIdAndMissionTplIdList(orderBy: [PARAM_ORDER_ASC]) {
+    provider {
+      httpEndpoint
+      apiType
+      canValidate
+      usesSched
+      usesUnits
+      canReportMissionStatus
+      descriptionFormat
+    }
+    missionTemplate {
+      parameters {
         paramName
         type
         valueCanReference

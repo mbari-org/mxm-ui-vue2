@@ -21,7 +21,7 @@
         <q-card-section>
           <mxm-markdown
             :text="asset.description"
-            :start-markdown="asset.assetClassByProviderIdAndClassName.providerByProviderId.descriptionFormat === 'markdown'"
+            :start-markdown="asset.assetClass.provider.descriptionFormat === 'markdown'"
           />
         </q-card-section>
       </q-card>
@@ -74,15 +74,13 @@
         query: assetGql,
         variables() {
           return {
+            providerId: this.params.providerId,
             assetId: this.params.assetId
           }
         },
         update(data) {
           if (debug) console.log('update: data=', data)
-          if (data.allAssetsList && data.allAssetsList.length) {
-            return data.allAssetsList[0]
-          }
-          else return null
+          return data.asset
         },
       },
     },

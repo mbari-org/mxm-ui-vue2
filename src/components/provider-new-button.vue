@@ -121,27 +121,32 @@
           {
             providerId: 'TethysDash@okeanids',
             httpEndpoint: 'https://okeanids.mbari.org/TethysDash/api/mxm',
-            apiType: 'REST0',
+            apiType: 'rest0',
           },
           {
             providerId: 'TethysDash@tethystest:8080',
             httpEndpoint: 'http://tethystest.shore.mbari.org:8080/TethysDash/api/mxm',
-            apiType: 'REST0',
+            apiType: 'rest0',
           },
           {
             providerId: 'TethysDash@tethystest',
             httpEndpoint: 'http://tethystest.shore.mbari.org/TethysDash/api/mxm',
-            apiType: 'REST0',
+            apiType: 'rest0',
+          },
+          {
+            providerId: 'TethysDash@localhost:18080',
+            httpEndpoint: 'http://localhost:18080/TethysDash/api',
+            apiType: 'rest0',
           },
           {
             providerId: 'TFT@tsauv',
             httpEndpoint: 'http://tsauv.shore.mbari.org/tft-mxm',
-            apiType: 'REST0',
+            apiType: 'rest0',
           },
           {
             providerId: 'TFT@localhost',
             httpEndpoint: 'http://localhost:8040',
-            apiType: 'REST0',
+            apiType: 'rest0',
           },
         ]
       },
@@ -174,12 +179,10 @@
       async submit() {
         const mutation = providerInsertGql
         const variables = {
-          input: {
-            provider: {
-              providerId: this.providerId,
-              httpEndpoint: this.httpEndpoint,
-              apiType: this.apiType,
-            }
+          pl: {
+            providerId: this.providerId,
+            httpEndpoint: this.httpEndpoint,
+            apiType: this.apiType,
           }
         }
 
@@ -191,7 +194,8 @@
           const data = await this.$apollo.mutate({mutation, variables})
           this.$q.loading.hide()
           if (debug) console.debug('mutation data=', data)
-          this.closeDialogAndNotify(variables.input.provider)
+          const provider = get(data, 'data.createProvider')
+          this.closeDialogAndNotify(provider)
         }
         catch(error) {
           this.$q.loading.hide()

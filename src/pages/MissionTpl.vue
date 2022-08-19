@@ -17,11 +17,11 @@
           </div>
         </q-card-section>
         <q-separator/>
-        <q-card-section>
+        <q-card-section v-if="missionTpl.description">
           <mxm-markdown
             expandable expandable-title="Description:"
             :text="missionTpl.description"
-            :start-markdown="missionTpl.providerByProviderId.descriptionFormat === 'markdown'"
+            :start-markdown="missionTpl.provider.descriptionFormat === 'markdown'"
           />
         </q-card-section>
       </q-card>
@@ -34,18 +34,18 @@
               <q-chip
                 class="col-auto shadow-1"
                 v-for="c in myAssetClasses"
-                :key="c.assetClassName"
+                :key="c.className"
                 color="white" text-color="black"
                 square dense
               >
                 <router-link
                   style="text-decoration:none" class="q-pr-sm"
-                  :to="$utl.routeLoc([params.providerId, 'ac', c.assetClassName])"
+                  :to="$utl.routeLoc([params.providerId, 'ac', c.className])"
                 >
-                  {{c.assetClassName}}
+                  {{c.className}}
                 </router-link>
-                <q-tooltip v-if="c.assetClassByProviderIdAndAssetClassName.description">
-                  {{c.assetClassByProviderIdAndAssetClassName.description}}
+                <q-tooltip v-if="c.description">
+                  {{c.description}}
                 </q-tooltip>
               </q-chip>
             </div>
@@ -131,12 +131,14 @@
             {{ props.row.defaultUnits }}
           </q-td>
 
-          <q-td key="description" :props="props"
-                style="vertical-align:top"
+          <q-td
+            v-if="props.row.description"
+            key="description" :props="props"
+            style="vertical-align:top"
           >
             <mxm-markdown
               simple hide-empty :text="props.row.description"
-              :start-markdown="missionTpl.providerByProviderId.descriptionFormat === 'markdown'"
+              :start-markdown="missionTpl.provider.descriptionFormat === 'markdown'"
             />
           </q-td>
         </q-tr>
@@ -163,7 +165,7 @@
   import ParameterValue from 'components/parameter-value'
   import map from 'lodash/map'
 
-  const debug = false
+  const debug = true
 
   export default {
     components: {
@@ -172,6 +174,7 @@
 
     data() {
       return {
+        debug,
         loading: false,
         missionTpl: null,
         provider: null,
@@ -224,15 +227,15 @@
       },
 
       myAssetClasses() {
-        return this.missionTpl && this.missionTpl.missionTplAssetClassesByProviderIdAndMissionTplIdList || []
+        return this.missionTpl && this.missionTpl.assetClasses || []
       },
 
       myAssetClassNames() {
-        return map(this.myAssetClasses, "assetClassName")
+        return map(this.myAssetClasses, "className")
       },
 
       myParameters() {
-        return this.missionTpl && this.missionTpl.parametersByProviderIdAndMissionTplIdList || []
+        return this.missionTpl && this.missionTpl.parameters || []
       },
     },
 
@@ -248,9 +251,9 @@
         update(data) {
           if (debug) console.log('update: data=', data)
           let missionTpl = null
-          if (data.missionTplByProviderIdAndMissionTplId) {
-            missionTpl = data.missionTplByProviderIdAndMissionTplId
-            this.provider = missionTpl.providerByProviderId
+          if (data.missionTemplate) {
+            missionTpl = data.missionTemplate
+            this.provider = missionTpl.provider
           }
           return missionTpl
         },
@@ -269,25 +272,35 @@
         })
       },
 
-      refreshMissionTpl() {
+      async refreshMissionTpl() {
         if (this.$apollo.queries.missionTpl) {
-          return this.$apollo.queries.missionTpl.refetch()
+          await this.$apollo.queries.missionTpl.refetch()
         }
       },
 
       async reloadMissionTpl() {
-        // TODO get updated info from the mutation itself
-        await this.updateMissionTpl()
-        this.refreshMissionTpl()
+        this.$q.loading.show({
+          message: `Reloading template ${this.params.missionTplId} ...`,
+          messageColor: 'black',
+          customClass: 'text-bold',
+        })
+        try {
+          // TODO get updated info from the mutation itself
+          await this.updateMissionTpl()
+          await this.refreshMissionTpl()
+        }
+        finally {
+          this.$q.loading.hide()
+        }
       },
 
       async updateMissionTpl() {
         if (debug) console.debug('updateMissionTpl')
         const mutation = missionTplUpdateGql
         const variables = {
-          input: {
-            id: this.missionTpl.id,
-            missionTplPatch: {}  // required but unused
+          pl: {
+            providerId: this.params.providerId,
+            missionTplId: this.params.missionTplId
           }
         }
         try {
@@ -304,16 +317,29 @@
           console.error('updateMissionTpl: mutation error=', error)
         }
       },
+
+      routePathChanged(path) {
+        console.warn(`routePathChanged=`, path)
+        this.setBreadcrumbs()
+
+        // this.refreshMissionTpl()
+
+        setTimeout( async () => {
+          if (!this.missionTpl || !this.missionTpl.assetClasses) {
+            await this.reloadMissionTpl()
+          }
+          else {
+            await this.refreshMissionTpl()
+          }
+        }, 777)
+      }
     },
 
     watch: {
-      params: {
-        handler(val) {
-          console.warn(`WATCH params=`, val)
-          this.setBreadcrumbs()
-          this.refreshMissionTpl()
+      '$route.path': {
+        handler(path) {
+          this.routePathChanged(path)
         },
-        deep: true,
         immediate: true,
       },
     },
