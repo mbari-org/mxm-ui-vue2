@@ -1,0 +1,9 @@
+subscription providerCreated {
+  providerCreated {
+    providerId
+    httpEndpoint
+    apiType
+    description
+    descriptionFormat
+  }
+}

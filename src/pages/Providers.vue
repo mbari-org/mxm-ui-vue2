@@ -55,6 +55,8 @@
 <script>
   import allProvidersGql from '../graphql/providers.gql'
   import providerDeleteGql from '../graphql/providerDelete.gql'
+  import providerCreatedGql from '../graphql/providerCreated.gql'
+  import providerDeletedGql from '../graphql/providerDeleted.gql'
 
   import ProviderNewButton from 'components/provider-new-button'
 
@@ -112,7 +114,45 @@
     },
 
     apollo: {
-      allProviders: allProvidersGql,
+      allProviders: {
+        query: allProvidersGql,
+        subscribeToMore: [
+          {
+            document: providerCreatedGql,
+            updateQuery: (previousResult, { subscriptionData }) => {
+              console.debug('providerCreated: previousResult=', previousResult, 'subscriptionData=', subscriptionData)
+              return Object.assign({}, previousResult, {
+                allProviders: [...previousResult.allProviders, subscriptionData.data.providerCreated]
+              })
+            },
+          },
+          {
+            document: providerDeletedGql,
+            updateQuery: (previousResult, { subscriptionData }) => {
+              console.debug('providerDeleted: previousResult=', previousResult, 'subscriptionData=', subscriptionData)
+              const providerId = subscriptionData.data.providerDeleted.providerId
+              return Object.assign({}, previousResult, {
+                allProviders: [] // previousResult.allProviders.filter(r => r.providerId !== providerId)
+              })
+            },
+          },
+        ],
+      },
+
+      // $subscribe: {
+      //   providerCreated: {
+      //     query: providerCreatedGql,
+      //     result ({ data }) {
+      //       console.warn('providerCreated', data)
+      //     },
+      //   },
+      //   providerDeletedGql: {
+      //     query: providerDeletedGql,
+      //     result ({ data }) {
+      //       console.warn('providerDeleted', data)
+      //     },
+      //   },
+      // },
     },
 
     methods: {

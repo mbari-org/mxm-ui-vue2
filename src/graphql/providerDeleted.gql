@@ -1,0 +1,9 @@
+subscription providerDeleted {
+  providerDeleted {
+    providerId
+    httpEndpoint
+    apiType
+    description
+    descriptionFormat
+  }
+}
