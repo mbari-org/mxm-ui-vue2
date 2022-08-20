@@ -1,0 +1,9 @@
+subscription providerUpdatedById($providerId: String!) {
+  providerUpdatedById(providerId: $providerId) {
+    providerId
+    httpEndpoint
+    apiType
+    description
+    descriptionFormat
+  }
+}

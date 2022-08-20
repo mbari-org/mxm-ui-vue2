@@ -1,0 +1,9 @@
+subscription providerUpdated {
+  providerUpdated {
+    providerId
+    httpEndpoint
+    apiType
+    description
+    descriptionFormat
+  }
+}

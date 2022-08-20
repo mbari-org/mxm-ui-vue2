@@ -55,7 +55,9 @@
 <script>
   import allProvidersGql from '../graphql/providers.gql'
   import providerDeleteGql from '../graphql/providerDelete.gql'
+
   import providerCreatedGql from '../graphql/providerCreated.gql'
+  import providerUpdatedGql from '../graphql/providerUpdated.gql'
   import providerDeletedGql from '../graphql/providerDeleted.gql'
 
   import ProviderNewButton from 'components/provider-new-button'
@@ -149,6 +151,18 @@
               position: 'bottom-right',
               textColor: 'white',
               message: 'Provider created: ' + data.providerCreated.providerId
+            })
+          },
+        },
+        providerUpdated: {
+          query: providerUpdatedGql,
+          result ({ data }) {
+            console.warn('providerUpdated', data)
+            this.$q.notify({
+              color: 'positive',
+              position: 'bottom-right',
+              textColor: 'white',
+              message: 'Provider providerUpdated: ' + data.providerUpdated.providerId
             })
           },
         },

@@ -120,6 +120,7 @@
 
 <script>
 import providerGql from '../graphql/provider.gql'
+import providerUpdatedByIdGql from '../graphql/providerUpdatedById.gql'
 
 import reduce from 'lodash/reduce'
 import size from 'lodash/size'
@@ -192,6 +193,26 @@ const debug = window.location.search.match(/.*debug=.*provider.*/)
         update(data) {
           if (debug) console.log('update: data=', data)
           return data.provider || null
+        },
+      },
+
+      $subscribe: {
+        providerUpdatedById: {
+          query: providerUpdatedByIdGql,
+          variables() {
+            return {
+              providerId: this.params.providerId
+            }
+          },
+          result ({ data }) {
+            console.warn('providerUpdatedById: data=', data)
+            this.$q.notify({
+              color: 'positive',
+              position: 'bottom-right',
+              textColor: 'white',
+              message: 'Provider updated: ' + data.providerUpdatedById.providerId
+            })
+          },
         },
       },
     },
