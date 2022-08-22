@@ -295,9 +295,11 @@
 
 <script>
   import missionGql from '../graphql/mission.gql'
+
   import argumentInsertGql from '../graphql/argumentInsert.gql'
   import argumentUpdateGql from '../graphql/argumentUpdate.gql'
   import argumentDeleteGql from '../graphql/argumentDelete.gql'
+
   import missionUpdateGql from '../graphql/missionUpdate.gql'
   import missionDeleteGql from '../graphql/missionDelete.gql'
 
@@ -587,7 +589,7 @@
                 || alreadySavedArg.paramUnits !== arg.paramUnits
               ) {
                 if (debug) console.debug(arg.paramName, 'UPDATING', arg.paramValue)
-                this.updateArgument(alreadySavedArg.id, arg.paramValue, arg.paramUnits, ok => {
+                this.updateArgument(alreadySavedArg.paramName, arg.paramValue, arg.paramUnits, ok => {
                   if (ok) {
                     numUpdated++
                   }
@@ -610,7 +612,7 @@
             // arg has the default value.
             if (alreadySavedArg) {
               if (debug) console.debug(arg.paramName, 'DELETING', arg.paramName)
-              this.deleteArgument(alreadySavedArg.id, ok => {
+              this.deleteArgument(alreadySavedArg.paramName, ok => {
                 if (ok) {
                   numDeleted++
                 }
@@ -628,12 +630,14 @@
       insertArgument(paramName, paramValue, paramUnits, next) {
         const mutation = argumentInsertGql
         const variables = {
-          missionId: this.params.missionId,
-          providerId: this.mission.providerId,
-          missionTplId: this.mission.missionTplId,
-          paramName,
-          paramValue,
-          paramUnits,
+          pl: {
+            missionId: this.params.missionId,
+            providerId: this.mission.providerId,
+            missionTplId: this.mission.missionTplId,
+            paramName,
+            paramValue,
+            paramUnits,
+          }
         }
         if (debug) console.debug('insertArgument: variables=', variables)
 
@@ -648,16 +652,17 @@
           })
       },
 
-      updateArgument(id, paramValue, paramUnits, next) {
+      updateArgument(paramName, paramValue, paramUnits, next) {
         const mutation = argumentUpdateGql
         const variables = {
-          input: {
-            id,
-            argumentPatch: {
-              paramValue,
-              paramUnits,
-            }
-          }
+          pl: {
+            missionId: this.params.missionId,
+            providerId: this.mission.providerId,
+            missionTplId: this.mission.missionTplId,
+            paramName,
+            paramValue,
+            paramUnits,
+          },
         }
         this.$apollo.mutate({mutation, variables})
           .then((data) => {
@@ -670,12 +675,15 @@
           })
       },
 
-      deleteArgument(id, next) {
+      deleteArgument(paramName, next) {
         const mutation = argumentDeleteGql
         const variables = {
-          input: {
-            id
-          }
+          pl: {
+            missionId: this.params.missionId,
+            providerId: this.mission.providerId,
+            missionTplId: this.mission.missionTplId,
+            paramName,
+          },
         }
         this.$apollo.mutate({mutation, variables})
           .then((data) => {

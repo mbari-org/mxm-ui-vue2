@@ -1,30 +1,10 @@
-mutation createArgument(
-  $missionId: String!
-  $providerId: String!
-  $missionTplId: String!
-  $paramName: String!
-  $paramValue: String!
-  $paramUnits: String
-) {
-  createArgument(
-    input: {
-      argument: {
-        missionId: $missionId
-        providerId: $providerId
-        missionTplId: $missionTplId
-        paramName: $paramName
-        paramValue: $paramValue
-        paramUnits: $paramUnits
-      }
-    }
-  ) {
-    argument {
-      missionId
-      providerId
-      missionTplId
-      paramName
-      paramValue
-      paramUnits
-    }
+mutation createArgument($pl: ArgumentInput!) {
+  createArgument(pl: $pl) {
+    missionId
+    providerId
+    missionTplId
+    paramName
+    paramValue
+    paramUnits
   }
 }

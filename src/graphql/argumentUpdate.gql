@@ -1,21 +1,10 @@
-mutation updateArgument($input: UpdateArgumentInput!) {
-  updateArgument(input: $input) {
-    argument {
-      missionId
-      providerId
-      missionTplId
-      paramName
-      paramValue
-      paramUnits
-    }
+mutation updateArgument($pl: ArgumentInput!) {
+  updateArgument(pl: $pl) {
+    missionId
+    providerId
+    missionTplId
+    paramName
+    paramValue
+    paramUnits
   }
 }
-
-# variables: {
-#  "input": {
-#    "id": "asasasas",
-#    "argumentPatch": {
-#      "paramValue": "3131"
-#    }
-#  }
-#}
