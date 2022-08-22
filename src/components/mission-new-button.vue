@@ -107,7 +107,7 @@
 
     computed: {
       missionTpls() {
-        const all = this.provider && this.provider.missionTplsByProviderIdList || []
+        const all = this.provider && this.provider.missionTemplates || []
         return all.filter(mt => !mt.missionTplId.endsWith('/'))
       },
 
@@ -115,8 +115,8 @@
         const list = []
         const missionTpl = find(this.missionTpls, {missionTplId: this.missionTplId})
         if (debug) console.debug('missionTpl=', missionTpl)
-        if (missionTpl && missionTpl.missionTplAssetClassesByProviderIdAndMissionTplIdList) {
-          each(missionTpl.missionTplAssetClassesByProviderIdAndMissionTplIdList, c => {
+        if (missionTpl && missionTpl.assetClasses) {
+          each(missionTpl.assetClasses, c => {
             list.push(c)
           })
         }
@@ -144,10 +144,7 @@
         },
         update(data) {
           if (debug) console.log('mission-new-button update: data=', data)
-          if (data.allProvidersList && data.allProvidersList.length) {
-            return data.allProvidersList[0]
-          }
-          else return null
+          return data.provider || null
         },
       },
     },
@@ -161,14 +158,14 @@
         this.description = null
         this.arguments = []
         this.schedType = 'ASAP'
-        this.startDate = new Date()
-        this.endDate = new Date()
+        this.startDate = null
+        this.endDate = null
         this.dialogOpened = true
         this.$apollo.queries.provider.refetch()
       },
 
       submit() {
-        const mission = {
+        const pl = {
           providerId: this.providerId,
           missionTplId: this.missionTplId,
           missionId: this.missionId,
@@ -178,13 +175,13 @@
           description: this.description
         }
         if (this.startDate) {
-          mission.startDate = this.startDate.toISOString()
+          pl.startDate = this.startDate.toISOString()
         }
         if (this.endDate) {
-          mission.endDate = this.endDate.toISOString()
+          pl.endDate = this.endDate.toISOString()
         }
 
-        const variables = {input: {mission}}
+        const variables = {pl}
         if (debug) console.debug('variables=', variables)
 
         const mutation = missionInsertGql

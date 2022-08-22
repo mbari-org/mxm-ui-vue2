@@ -1,25 +1,12 @@
-mutation updateMission($input: UpdateMissionInput!) {
-  updateMission(input: $input) {
-    mission {
-      id
-      providerId
-      missionTplId
-      missionId
-      missionStatus
-      description
-      assetId
-      startDate
-      endDate
-    }
+mutation updateMission($pl: MissionInput!) {
+  updateMission(pl: $pl) {
+    providerId
+    missionTplId
+    missionId
+    missionStatus
+    description
+    assetId
+    startDate
+    endDate
   }
 }
-
-
-# variables: {
-#  "input": {
-#    "id": "WyJtaXNzaW9ucyIsInNjaTJpbnN0MiJd",
-#    "missionPatch": {
-#      "description": "updated description ..."
-#    }
-#  }
-#}

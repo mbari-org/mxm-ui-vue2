@@ -723,9 +723,11 @@
         console.debug('updateMission missionPatch=', missionPatch)
         const mutation = missionUpdateGql
         const variables = {
-          input: {
-            id: this.mission.id,
-            missionPatch
+          pl: {
+            ...missionPatch,
+            providerId: this.mission.providerId,
+            missionTplId: this.mission.missionTplId,
+            missionId: this.mission.missionId,
           }
         }
         const data = await this.$apollo.mutate({mutation, variables})
@@ -793,6 +795,7 @@
       },
 
       deleteMission() {
+        console.debug('deleteMission: this.mission=', this.mission)
         this.$q.dialog({
           title: 'Confirm',
           message: `Are you sure you want to delete this mission '${this.mission.missionId}'`,
@@ -803,13 +806,15 @@
         }).onOk(() => {
           const mutation = missionDeleteGql
           const variables = {
-            input: {
-              id: this.mission.id,
+            pl: {
+              providerId: this.mission.providerId,
+              missionTplId: this.mission.missionTplId,
+              missionId: this.mission.missionId,
             }
           }
           this.$apollo.mutate({mutation, variables})
             .then((data) => {
-              if (debug) console.debug('deleteMission: mutation data=', data)
+              /*if (debug)*/ console.debug('deleteMission: mutation data=', data)
               this.$q.notify({
                 message: `Mission deleted: '${this.mission.missionId}'`,
                 timeout: 2000,

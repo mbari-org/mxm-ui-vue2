@@ -1,17 +1,9 @@
-mutation deleteMission($input: DeleteMissionInput!) {
-  deleteMission(input: $input) {
-    mission {
-      id
-      providerId
-      missionTplId
-      missionId
-      description
-      assetId
-    }
+mutation deleteMission($pl: MissionInput!) {
+  deleteMission(pl: $pl) {
+    providerId
+    missionTplId
+    missionId
+    description
+    assetId
   }
 }
-#    {
-#      "input": {
-#        "id": ".."
-#      }
-#    }

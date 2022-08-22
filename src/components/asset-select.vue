@@ -49,11 +49,11 @@
       options() {
         const list = []
         each(this.assetClasses, e => {
-          const instances = get(e, 'assetClassByProviderIdAndAssetClassName.assetsByProviderIdAndClassNameList') || []
+          const instances = e.assets || []
           if (debug) console.debug(':: instances=', instances)
           each(instances, i => {
             list.push({
-              label: `${i.assetId} (${e.assetClassName})`,
+              label: `${i.assetId} (${e.className})`,
               value: i.assetId,
             })
           })
