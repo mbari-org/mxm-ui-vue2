@@ -1,0 +1,7 @@
+mutation pingProvider($pl: ProviderInput!) {
+  pingProvider(pl: $pl) {
+    result {
+      datetime
+    }
+  }
+}

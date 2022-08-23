@@ -53,17 +53,32 @@
           />
         </div>
 
-        <div>
+        <div class="column">
           HTTP Endpoint:
-          <q-input
-            dense hide-bottom-space
-            no-error-icon
-            :error="!httpEndpoint.length"
-            class="bg-light-blue-1"
-            v-model.trim="httpEndpoint"
-            type="text"
-            style="width:28em"
-          />
+          <div class="row items-center">
+            <q-input
+              dense hide-bottom-space
+              no-error-icon
+              :error="!httpEndpoint.length"
+              class="bg-light-blue-1"
+              v-model.trim="httpEndpoint"
+              type="text"
+              style="width:28em"
+            />
+            <q-btn
+              v-if="pingOk"
+              icon="check"
+              dense round no-caps size="sm"
+              class="text-green-5"
+            />
+            <q-btn
+              v-else
+              label="Test"
+              :color="pingFailed ? 'red' : 'secondary'"
+              dense round no-caps size="sm"
+              @click="testConnectionToProvider"
+            />
+          </div>
         </div>
 
         <div>
@@ -89,6 +104,7 @@
 </template>
 
 <script>
+  import providerPingGql from '../graphql/providerPing.gql'
   import providerInsertGql from '../graphql/providerInsert.gql'
 
   import apiTypeSelect from '../components/api-type-select'
@@ -108,6 +124,8 @@
       providerId: '',
       httpEndpoint: '',
       apiType: '',
+      pingOk: false,
+      pingFailed: false,
 
       providerNameInvalid: null,
       progress: null,
@@ -135,7 +153,7 @@
           },
           {
             providerId: 'TethysDash@localhost:18080',
-            httpEndpoint: 'http://localhost:18080/TethysDash/api',
+            httpEndpoint: 'http://localhost:18080/TethysDash/api/mxm',
             apiType: 'REST0',
           },
           {
@@ -145,14 +163,14 @@
           },
           {
             providerId: 'TFT@localhost',
-            httpEndpoint: 'http://localhost:8040',
+            httpEndpoint: 'http://localhost:8040/mxm',
             apiType: 'REST0',
           },
         ]
       },
 
       okToSubmit() {
-        return this.providerId && this.httpEndpoint && this.apiType
+        return this.providerId && this.httpEndpoint && this.apiType && this.pingOk
       },
     },
 
@@ -167,6 +185,49 @@
         this.httpEndpoint = ''
 
         this.dialogOpened = true
+      },
+
+      async testConnectionToProvider() {
+        console.debug('testConnectionToProvider')
+        this.pingOk = false
+        this.pingFailed = false
+        const mutation = providerPingGql
+        const variables = {
+          pl: {
+            providerId: this.providerId,
+            httpEndpoint: this.httpEndpoint,
+            apiType: this.apiType,
+          }
+        }
+
+        this.$q.loading.show({
+          message: 'Pinging provider...'
+        })
+
+        try {
+          const data = await this.$apollo.mutate({mutation, variables})
+          if (debug) console.debug('mutation data=', data)
+          const datetime = get(data, 'data.pingProvider.result.datetime')
+          if (datetime) {
+            this.pingOk = true
+            setTimeout(() => {this.pingOk = false}, 5000)
+          }
+        }
+        catch(error) {
+          this.pingFailed = true
+          console.debug(typeof error.message);
+          console.warn(error.message);
+          this.$q.notify({
+            color: 'negative',
+            message: error.message,
+            textColor: 'white',
+            timeout: 3000,
+            closeBtn: 'Close',
+          })
+        }
+        finally {
+          this.$q.loading.hide()
+        }
       },
 
       providerSelected(pp) {
