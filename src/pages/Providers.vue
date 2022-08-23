@@ -11,9 +11,9 @@
     >
       <div slot="top-left" slot-scope="props" class="row items-center">
         <div class="col-auto text-h5">
-          Providers
+          Registered mission execution systems
           <span class="text-grey">
-            (Mission execution systems)
+            (aka Providers)
           </span>
         </div>
       </div>
@@ -44,7 +44,7 @@
           @click.exact="deleteProvider(props.row)"
           @click.shift.exact="doDeleteProvider(props.row)"
         >
-          <q-tooltip>Delete provider</q-tooltip>
+          <q-tooltip>Unregister this provider</q-tooltip>
         </q-btn>
       </q-td>
 

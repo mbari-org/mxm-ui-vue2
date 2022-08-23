@@ -34,6 +34,12 @@
         />
       </div>
 
+      <q-td slot="body-cell-missionStatus" slot-scope="props" :props="props"
+            style="width:5px;vertical-align:top"
+      >
+        <q-chip dense>{{props.value}}</q-chip>
+      </q-td>
+
       <q-td slot="body-cell-missionId" slot-scope="props" :props="props"
             style="width:5px;vertical-align:top"
       >
@@ -76,12 +82,6 @@
         />
       </q-td>
 
-      <q-td slot="body-cell-missionStatus" slot-scope="props" :props="props"
-            style="width:5px;vertical-align:top"
-      >
-        <q-chip dense>{{props.value}}</q-chip>
-      </q-td>
-
     </q-table>
   </q-page>
 </template>
@@ -103,23 +103,16 @@
         missionsForProvider: [],
         columns: [
           {
+            field: 'missionStatus',
+            name: 'missionStatus',
+            label: 'Status',
+            align: 'right',
+            sortable: true
+          },
+          {
             field: 'missionId',
             name: 'missionId',
             label: 'Mission ID',
-            align: 'left',
-            sortable: true
-          },
-          {
-            field: 'missionTplId',
-            name: 'missionTplId',
-            label: 'Template',
-            align: 'left',
-            sortable: true
-          },
-          {
-            field: 'assetId',
-            name: 'assetId',
-            label: 'Asset',
             align: 'left',
             sortable: true
           },
@@ -131,12 +124,19 @@
             sortable: true
           },
           {
-            field: 'missionStatus',
-            name: 'missionStatus',
-            label: 'Status',
-            align: 'right',
+            field: 'assetId',
+            name: 'assetId',
+            label: 'Asset',
+            align: 'left',
             sortable: true
-          }
+          },
+          {
+            field: 'missionTplId',
+            name: 'missionTplId',
+            label: 'Template',
+            align: 'left',
+            sortable: true
+          },
         ],
         rowsPerPage: [0],
         pagination: {
