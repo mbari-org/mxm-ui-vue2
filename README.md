@@ -1,6 +1,33 @@
-# MXM Frontend
+# Mission Execution Mediation Service
 
 **WIP**
+
+The Mission Execution Mediation Service (MXM) effort seeks to provide a set of
+programmatic and user interfaces to integrate mission information across
+diverse mission execution systems at MBARI, as well as to support the integration
+of third-party applications, in particular to facilitate extended planning
+capabilities on MBARI assets
+
+The proposed MXM interfaces will support a unified view of the information in terms
+of available mission definitions, parameterization, scheduling, and execution status.
+
+## The MXM ecosystem
+
+The MXM ecosystem consists of the following components:
+
+- MXM Server: the central MXM service where mission execution systems (_providers_)
+  can be registered to expose all relevant mission information and capabilities for
+  mission scheduling.
+- MXM Webapp: The GUI for the MXM service.
+- Providers: The external mission execution systems integrated into the MXM ecosystem.
+  Each provider implements an MXM Provider API (in full or in part, depending on capabilities)
+  to support this integration.
+
+## MXM Webapp
+
+This is the web based GUI for the MXM service.
+The current focus of this GUI is on facilitating the development of the overall system,
+so the exposed UI organization and functionality may not be very user-friendly yet.
 
 NOTE:
 
