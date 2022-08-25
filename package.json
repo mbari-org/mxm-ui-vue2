@@ -8,6 +8,8 @@
   "author": "Carlos Rueda <carueda@mbari.org>",
   "license": "Apache-2.0",
   "scripts": {
+    "build": "quasar build --modern",
+    "start": "quasar dev --modern --port 8086",
     "test": "echo \"See package.json => scripts for available tests.\" && exit 0",
     "test:unit": "jest",
     "test:unit:updateSnapshot": "jest --updateSnapshot",
