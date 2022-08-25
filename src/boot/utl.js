@@ -25,7 +25,7 @@ export default ({ app, Vue, router }) => {
 
 function routeLoc(loc) {
   if (Array.isArray(loc)) {
-    return '/' + map(loc, encodeURIComponent).join('/')
+    return '/p/' + map(loc, encodeURIComponent).join('/')
   }
   else return loc
 }
