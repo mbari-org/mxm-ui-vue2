@@ -196,6 +196,7 @@ const debug = window.location.search.match(/.*debug=.*provider.*/)
         },
       },
 
+/*
       $subscribe: {
         providerUpdatedById: {
           query: providerUpdatedByIdGql,
@@ -215,6 +216,7 @@ const debug = window.location.search.match(/.*debug=.*provider.*/)
           },
         },
       },
+*/
     },
 
     methods: {

@@ -141,6 +141,7 @@
         ],
       },
 
+/*
       $subscribe: {
         providerCreated: {
           query: providerCreatedGql,
@@ -179,6 +180,7 @@
           },
         },
       },
+*/
     },
 
     methods: {
