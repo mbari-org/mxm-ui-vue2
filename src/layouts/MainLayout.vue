@@ -36,9 +36,52 @@
               <q-icon name="fab fa-github" />
             </a>
           </div>
-          <small>
-            GraphQL endpoint: {{ $mxmConfig.graphqlUri }}
-          </small>
+          <div class="row q-gutter-x-md items-center" style="font-size:smaller">
+            <div class="row q-gutter-x-xs items-center">
+              GraphQL:
+              <div>
+                Endpoint
+                <q-tooltip>{{ $mxmConfig.graphqlUri }}</q-tooltip>
+              </div>
+              <a v-if="$mxmConfig.graphqlSchema"
+                 class="text-white"
+                 :href="$mxmConfig.graphqlSchema"
+                 target="mxm_graphqlSchema" rel="noopener"
+              >
+                Schema
+              </a>
+              <a v-if="$mxmConfig.graphqlUi"
+                 style="font-size:small"
+                 class="text-white"
+                 :href="$mxmConfig.graphqlUi"
+                 target="mxm_graphqlUI" rel="noopener"
+              >
+                UI
+              </a>
+            </div>
+            <span class="row q-gutter-x-xs items-center">
+              OpenAPI:
+              <span>
+                endpoint
+                <q-tooltip>{{ $mxmConfig.openapi }}</q-tooltip>
+              </span>
+              <a v-if="$mxmConfig.openapiSchema"
+                 class="text-white"
+                 :href="$mxmConfig.openapiSchema"
+                 target="mxm_graphqlSchema" rel="noopener"
+              >
+                Schema
+              </a>
+              <a v-if="$mxmConfig.swaggerUi"
+                 style="font-size:small"
+                 class="text-white"
+                 :href="$mxmConfig.swaggerUi"
+                 target="mxm_swaggerUI" rel="noopener"
+              >
+                UI
+              </a>
+            </span>
+          </div>
         </div>
       </q-toolbar>
 
