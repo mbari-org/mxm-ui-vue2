@@ -18,7 +18,7 @@
         <div v-if="$mxmConfig" class="column">
           <div class="row justify-between">
             <div class="row q-gutter-x-md">
-              <div>Prototype {{ $version.mxm }}</div>
+              <div>Prototype UI {{ $version.mxmUI }} / Server {{ $mxmConfig.mxmVersion }}</div>
               <a v-if="$mxmConfig.learnMoreUrl"
                  style="font-size:small"
                  class="text-white"
@@ -33,7 +33,7 @@
                style="text-decoration:none"
                class="text-white q-ml-md"
             >
-              <q-icon name="fab fa-github" />
+              <q-icon name="fab fa-github"/>
             </a>
           </div>
           <div class="row q-gutter-x-md items-center" style="font-size:smaller">
@@ -85,18 +85,28 @@
         </div>
       </q-toolbar>
 
-      <utl-breadcrumbs />
+      <utl-breadcrumbs/>
 
     </q-header>
 
     <q-page-container>
       <router-view/>
+      <pre
+        v-if="debug"
+        class="bg-blue-1 absolute-bottom">$mxmConfig={{ $mxmConfig }}</pre>
     </q-page-container>
   </q-layout>
 </template>
 
 <script>
-  export default {
-    name: 'MainLayout',
-  }
+const debug = window.location.search.match(/.*debug=.*\bconfig\b.*/)
+
+export default {
+  name: 'MainLayout',
+  data() {
+    return {
+      debug,
+    }
+  },
+}
 </script>

@@ -118,6 +118,7 @@
     apollo: {
       allProviders: {
         query: allProvidersGql,
+/*
         subscribeToMore: [
           {
             document: providerCreatedGql,
@@ -139,6 +140,7 @@
             },
           },
         ],
+*/
       },
 
 /*

@@ -9,7 +9,7 @@
   import {version} from '../package.json'
 
   Vue.prototype.$version = {
-    mxm: version,
+    mxmUI: version,
   }
 
   export default {
