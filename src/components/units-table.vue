@@ -105,6 +105,8 @@
         ],
         rowsPerPage: [0],
         pagination: {
+          sortBy: 'unitName',
+          descending: false,
           rowsPerPage: 0
         },
         filter: '',

@@ -140,6 +140,8 @@
         ],
         rowsPerPage: [0],
         pagination: {
+          sortBy: 'missionStatus', // TODO more proper default sorting?
+          descending: false,
           rowsPerPage: 0
         },
         filter: '',

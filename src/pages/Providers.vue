@@ -110,6 +110,8 @@
         ],
         rowsPerPage: [0],
         pagination: {
+          sortBy: 'providerId',
+          descending: false,
           rowsPerPage: 0
         },
       }

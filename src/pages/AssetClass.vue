@@ -100,6 +100,8 @@
         ],
         rowsPerPage: [0],
         pagination: {
+          sortBy: 'assetId',
+          descending: false,
           rowsPerPage: 0
         },
         filter: '',

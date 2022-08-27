@@ -163,7 +163,7 @@
           },
           {
             providerId: 'TFT@localhost',
-            httpEndpoint: 'http://localhost:8040/mxm',
+            httpEndpoint: 'http://localhost:8040',
             apiType: 'REST0',
           },
         ]

@@ -77,6 +77,8 @@
         ],
         rowsPerPage: [0],
         pagination: {
+          sortBy: 'className',
+          descending: false,
           rowsPerPage: 0
         },
         filter: '',

@@ -126,6 +126,8 @@
         ],
         rowsPerPage: [0],
         pagination: {
+          sortBy: 'missionTplId',
+          descending: false,
           rowsPerPage: 0
         },
         filter: '',
