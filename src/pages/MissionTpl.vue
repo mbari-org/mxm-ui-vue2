@@ -3,10 +3,12 @@
     <div v-if="missionTpl">
       <q-card class="q-mb-md">
         <q-card-section>
-          <div class="row q-gutter-x-sm items-center">
-            <div>Mission Template:</div>
-            <div class="text-bold" style="font-size:1.1em">
-              {{ params.missionTplId }}
+          <div class="row q-gutter-x-sm items-center justify-between">
+            <div class="row q-gutter-x-sm items-center">
+              <div>Mission Template:</div>
+              <div class="text-bold" style="font-size:1.1em">
+                {{ params.missionTplId }}
+              </div>
             </div>
             <div class="q-ml-xl row">
               <div class="q-ml-lg text-grey" style="font-size:smaller">
@@ -322,10 +324,8 @@
         console.warn(`routePathChanged=`, path)
         this.setBreadcrumbs()
 
-        // this.refreshMissionTpl()
-
         setTimeout( async () => {
-          if (!this.missionTpl || !this.missionTpl.assetClasses) {
+          if (!this.missionTpl || !this.missionTpl.retrievedAt) {
             await this.reloadMissionTpl()
           }
           else {

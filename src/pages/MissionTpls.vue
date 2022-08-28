@@ -38,16 +38,16 @@
               class="q-mr-xs"
             />
             <div style="font-size:large">{{ directory }}</div>
-            <div
-              v-if="missionTplBasic && missionTplBasic.retrievedAt"
-              class="q-ml-lg text-grey" style="font-size:smaller"
-            >
-              {{ missionTplBasic.retrievedAt }}
-              <q-tooltip>Time when this template listing was last retrieved from the provider</q-tooltip>
-            </div>
           </div>
-
-
+        </div>
+        <div slot="top-right" slot-scope="props" class="row items-center">
+          <div
+            v-if="missionTplBasic && missionTplBasic.retrievedAt"
+            class="q-ml-lg text-grey" style="font-size:smaller"
+          >
+            {{ missionTplBasic.retrievedAt }}
+            <q-tooltip>Time when this template listing was last retrieved from the provider</q-tooltip>
+          </div>
         </div>
 
         <q-td slot="body-cell-missionTplId" slot-scope="props" :props="props"
