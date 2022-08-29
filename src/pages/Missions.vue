@@ -34,14 +34,29 @@
         />
       </div>
 
-      <q-td slot="body-cell-missionStatus" slot-scope="props" :props="props"
-            style="width:5px;vertical-align:top"
+      <q-td slot="body-cell-updatedDate" slot-scope="props" :props="props"
+            style="width:10em"
       >
-        <q-chip dense>{{props.value}}</q-chip>
+        {{props.value}}
       </q-td>
 
-      <q-td slot="body-cell-missionId" slot-scope="props" :props="props"
-            style="width:5px;vertical-align:top"
+      <q-td slot="body-cell-missionStatus" slot-scope="props" :props="props"
+            style="width:5px"
+      >
+        <q-chip dense size="sm">{{props.value}}</q-chip>
+      </q-td>
+
+      <q-td slot="body-cell-providerMissionId" slot-scope="props" :props="props"
+            style="width:5px"
+      >
+        <div v-if="props.value">
+          {{props.value}}
+          <q-tooltip>Provider mission ID</q-tooltip>
+        </div>
+      </q-td>
+
+      <q-td slot="body-cell-missionTplId" slot-scope="props" :props="props"
+            style="width:5px"
       >
         <router-link
           style="text-decoration:none"
@@ -51,19 +66,19 @@
         </router-link>
       </q-td>
 
-      <q-td slot="body-cell-missionTplId" slot-scope="props" :props="props"
-            style="width:5px;vertical-align:top"
+      <q-td slot="body-cell-missionId" slot-scope="props" :props="props"
+            style="width:5px"
       >
         <router-link
           style="text-decoration:none"
-          :to="$utl.routeLoc([params.providerId, 'mt', props.value])"
+          :to="$utl.routeLoc([params.providerId, 'mt', props.row.missionTplId, 'm', props.row.missionId])"
         >
           {{props.value}}
         </router-link>
       </q-td>
 
       <q-td slot="body-cell-assetId" slot-scope="props" :props="props"
-            style="width:5px;vertical-align:top"
+            style="width:5px"
       >
         <router-link
           style="text-decoration:none"
@@ -103,23 +118,30 @@
         missionsForProvider: [],
         columns: [
           {
-            field: 'missionStatus',
-            name: 'missionStatus',
-            label: 'Status',
-            align: 'right',
+            field: 'updatedDate',
+            name: 'updatedDate',
+            label: 'Updated',
+            align: 'left',
             sortable: true
           },
           {
-            field: 'missionId',
-            name: 'missionId',
-            label: 'Mission ID',
+            field: 'missionStatus',
+            name: 'missionStatus',
+            label: 'Status',
+            align: 'left',
+            sortable: true
+          },
+          {
+            field: 'missionTplId',
+            name: 'missionTplId',
+            label: 'Mission',
             align: 'left',
             sortable: true
           },
           {
             field: 'description',
             name: 'description',
-            label: 'Mission Description',
+            label: 'Description',
             align: 'left',
             sortable: true
           },
@@ -131,17 +153,24 @@
             sortable: true
           },
           {
-            field: 'missionTplId',
-            name: 'missionTplId',
-            label: 'Template',
+            field: 'missionId',
+            name: 'missionId',
+            label: 'ID',
+            align: 'left',
+            sortable: true
+          },
+          {
+            field: 'providerMissionId',
+            name: 'providerMissionId',
+            label: 'PMID',
             align: 'left',
             sortable: true
           },
         ],
         rowsPerPage: [0],
         pagination: {
-          sortBy: 'missionStatus', // TODO more proper default sorting?
-          descending: false,
+          sortBy: 'updatedDate',
+          descending: true,
           rowsPerPage: 0
         },
         filter: '',

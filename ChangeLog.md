@@ -1,5 +1,6 @@
 2022-08
 
+- expose new providerMissionId
 - disable subscription stuff for now
 - adjustment to enable ui dispatch from mxm-server (via quarkus-quinoa)
   - some tests with history mode

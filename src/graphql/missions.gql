@@ -6,6 +6,8 @@ query missionsForProvider($providerId: String!) {
     }
     missionTplId
     missionId
+    providerMissionId
+    updatedDate
     missionStatus
     assetId
     description

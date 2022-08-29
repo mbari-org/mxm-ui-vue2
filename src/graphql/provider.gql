@@ -5,6 +5,7 @@ query provider($providerId: String!) {
     apiType
     description
     canValidate
+    canReportMissionStatus
     usesUnits
     usesSched
     descriptionFormat

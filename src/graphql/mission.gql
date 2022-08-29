@@ -4,6 +4,7 @@ query mission($providerId: String!, $missionTplId: String!, $missionId: String!)
     missionTplId
     missionId
     missionStatus
+    providerMissionId
     assetId
     schedType
     schedDate

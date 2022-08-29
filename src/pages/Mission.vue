@@ -39,6 +39,13 @@
                   </router-link>
                 </div>
               </div>
+              <div class="row no-wrap items-center q-gutter-x-sm" style="font-size:smaller">
+                <div>PMID:</div>
+                <div>
+                  {{ mission.providerMissionId || '??' }}
+                  <q-tooltip>Provider mission ID</q-tooltip>
+                </div>
+              </div>
             </div>
             <mxm-markdown
               expandable expandable-title="Description:"

@@ -78,12 +78,6 @@
               </td>
             </tr>
             <tr>
-              <td>Can validate:</td>
-              <td class="text-bold">
-                {{ provider.canValidate ? 'Yes' : 'No '}}
-              </td>
-            </tr>
-            <tr>
               <td>Units of measure:</td>
               <td class="text-bold">
                 {{ provider.usesUnits ? 'Yes' : 'No '}}
@@ -93,6 +87,18 @@
               <td>Scheduling:</td>
               <td class="text-bold">
                 {{ provider.usesSched ? 'Yes' : 'No '}}
+              </td>
+            </tr>
+            <tr>
+              <td>Can validate mission:</td>
+              <td class="text-bold">
+                {{ provider.canValidate ? 'Yes' : 'No '}}
+              </td>
+            </tr>
+            <tr>
+              <td>Can report mission status:</td>
+              <td class="text-bold">
+                {{ provider.canReportMissionStatus ? 'Yes' : 'No '}}
               </td>
             </tr>
             <tr v-if="provider.descriptionFormat">
