@@ -4,6 +4,7 @@ mutation updateMission($pl: MissionInput!) {
     missionTplId
     missionId
     missionStatus
+    updatedDate
     providerMissionId
     description
     assetId

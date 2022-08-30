@@ -11,6 +11,10 @@
                 <div class="row no-wrap items-center text-grey q-gutter-x-sm">
                   <div>Status:</div>
                   <div class="text-bold">{{ mission.missionStatus }}</div>
+                  <div style="font-size:smaller">
+                    {{ mission.updatedDate }}
+                    <q-tooltip>Time of status update from the provider</q-tooltip>
+                  </div>
                 </div>
               </div>
               <div class="row no-wrap items-center q-gutter-x-sm" style="font-size:smaller">
@@ -114,7 +118,7 @@
           size="sm"
           @click="cancelMission"
         >
-          <q-tooltip>Request cancelation of submitted mission</q-tooltip>
+          <q-tooltip>Request cancellation of submitted mission</q-tooltip>
         </q-btn>
         <q-btn
           label="Delete"
