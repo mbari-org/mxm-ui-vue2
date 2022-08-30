@@ -749,7 +749,8 @@
         /*if (debug)*/ console.debug('updateMission: mutation data=', data)
         // TODO review the following!
         if (this.mission) {
-          assign(this.mission, get(data, 'data.updateMission.mission'))
+          // TODO apollo mechanism to reflect change, not having to do the refetch necessarily
+          this.refreshMission()
         }
         return missionPatch
       },
