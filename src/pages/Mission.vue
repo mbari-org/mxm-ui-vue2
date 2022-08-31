@@ -13,7 +13,7 @@
                   <div class="text-bold">{{ mission.missionStatus }}</div>
                   <div style="font-size:smaller">
                     {{ mission.updatedDate }}
-                    <q-tooltip>Time of status update from the provider</q-tooltip>
+                    <q-tooltip>Time of last status update</q-tooltip>
                   </div>
                 </div>
               </div>
@@ -43,15 +43,16 @@
                   </router-link>
                 </div>
               </div>
-              <div class="row" style="font-size:smaller">
-                MTRA: {{ mission && mission.missionTemplate && mission.missionTemplate.retrievedAt }}
+              <div class="row text-grey" style="font-size:smaller">
+                {{ mission && mission.missionTemplate && mission.missionTemplate.retrievedAt || '??'}}
+                <q-tooltip>Time of last template update</q-tooltip>
               </div>
               <div class="row no-wrap items-center q-gutter-x-sm" style="font-size:smaller">
                 <div>PMID:</div>
                 <div>
                   {{ mission.providerMissionId || '??' }}
-                  <q-tooltip>Provider mission ID</q-tooltip>
                 </div>
+                <q-tooltip>Provider mission ID, if already assigned</q-tooltip>
               </div>
             </div>
             <mxm-markdown
@@ -891,7 +892,7 @@
         this.$store.dispatch('units/getOrLoadUnitsForProvider', this.params.providerId)
 
         setTimeout( async () => {
-          if (!this.mission || this.mission.missionTemplate || !this.mission.missionTemplate.retrievedAt) {
+          if (!this.mission || !this.mission.missionTemplate || !this.mission.missionTemplate.retrievedAt) {
             this.$q.loading.show({
               message: `Loading template ${this.params.missionTplId} ...`,
               messageColor: 'black',
