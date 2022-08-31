@@ -28,6 +28,7 @@ query mission($providerId: String!, $missionTplId: String!, $missionId: String!)
       descriptionFormat
     }
     missionTemplate {
+      retrievedAt
       parameters {
         paramName
         type

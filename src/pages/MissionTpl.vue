@@ -232,10 +232,6 @@
         return this.missionTpl && this.missionTpl.assetClasses || []
       },
 
-      myAssetClassNames() {
-        return map(this.myAssetClasses, "className")
-      },
-
       myParameters() {
         return this.missionTpl && this.missionTpl.parameters || []
       },

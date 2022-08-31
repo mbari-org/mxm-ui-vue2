@@ -43,6 +43,9 @@
                   </router-link>
                 </div>
               </div>
+              <div class="row" style="font-size:smaller">
+                MTRA: {{ mission.missionTemplate.retrievedAt }}
+              </div>
               <div class="row no-wrap items-center q-gutter-x-sm" style="font-size:smaller">
                 <div>PMID:</div>
                 <div>
@@ -306,6 +309,7 @@
 
 <script>
   import missionGql from '../graphql/mission.gql'
+  import missionTplUpdateGql from "../graphql/missionTplUpdate.gql";
 
   import argumentInsertGql from '../graphql/argumentInsert.gql'
   import argumentUpdateGql from '../graphql/argumentUpdate.gql'
@@ -324,7 +328,6 @@
   import find from 'lodash/find'
   import filter from 'lodash/filter'
   import clone from 'lodash/clone'
-  import assign from 'lodash/assign'
   import size from 'lodash/size'
   import orderBy from 'lodash/orderBy'
 
@@ -473,17 +476,17 @@
         })
       },
 
-      refreshMission() {
+      async refreshMission() {
         if (this.$apollo.queries.mission) {
           this.loading = true
-          this.$apollo.queries.mission.refetch()
+          await this.$apollo.queries.mission.refetch()
         }
       },
 
       async reloadMission() {
         // TODO get updated info from the mutation itself
         await this.updateMission({})
-        this.refreshMission()
+        await this.refreshMission()
       },
 
       editable() {
@@ -854,19 +857,67 @@
             })
         })
       },
+
+      // used to load parameters when not full template has been loaded yet
+      async updateMissionTpl() {
+        if (debug) console.debug('updateMissionTpl')
+        const mutation = missionTplUpdateGql
+        const variables = {
+          pl: {
+            providerId: this.params.providerId,
+            missionTplId: this.params.missionTplId
+          }
+        }
+        try {
+          const data = await this.$apollo.mutate({mutation, variables})
+          if (debug) console.debug('updateMissionTpl: mutation data=', data)
+          this.$q.notify({
+            message: `Mission template reloaded from provider`,
+            timeout: 1000,
+            position: 'top',
+            color: 'info',
+          })
+        }
+        catch(error) {
+          console.error('updateMissionTpl: mutation error=', error)
+        }
+      },
+
+      routePathChanged(path) {
+        console.warn(`routePathChanged=`, path)
+        this.setBreadcrumbs()
+
+        this.parametersWithError = {}
+        this.$store.dispatch('units/getOrLoadUnitsForProvider', this.params.providerId)
+
+        setTimeout( async () => {
+          if (!this.mission.missionTemplate || !this.mission.missionTemplate.retrievedAt) {
+            this.$q.loading.show({
+              message: `Loading template ${this.params.missionTplId} ...`,
+              messageColor: 'black',
+              customClass: 'text-bold',
+            })
+            try {
+              await this.updateMissionTpl()
+              await this.reloadMission()
+            }
+            finally {
+              this.$q.loading.hide()
+            }
+          }
+          // unneeded?
+          // else {
+          //   await this.refreshMission()
+          // }
+        }, 777)
+      }
     },
 
     watch: {
-      params: {
-        handler(val) {
-          console.warn(`WATCH params=`, val)
-          this.setBreadcrumbs()
-
-          this.parametersWithError = {}
-          this.refreshMission()
-          this.$store.dispatch('units/getOrLoadUnitsForProvider', this.params.providerId)
+      '$route.path': {
+        handler(path) {
+          this.routePathChanged(path)
         },
-        deep: true,
         immediate: true,
       },
     },
