@@ -1,5 +1,6 @@
 2022-08
 
+- version 0.8.8
 - if not already, load full template when creating new mission
 - expose new providerMissionId
 - disable subscription stuff for now

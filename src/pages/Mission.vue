@@ -44,7 +44,7 @@
                 </div>
               </div>
               <div class="row" style="font-size:smaller">
-                MTRA: {{ mission.missionTemplate.retrievedAt }}
+                MTRA: {{ mission && mission.missionTemplate && mission.missionTemplate.retrievedAt }}
               </div>
               <div class="row no-wrap items-center q-gutter-x-sm" style="font-size:smaller">
                 <div>PMID:</div>
@@ -891,7 +891,7 @@
         this.$store.dispatch('units/getOrLoadUnitsForProvider', this.params.providerId)
 
         setTimeout( async () => {
-          if (!this.mission.missionTemplate || !this.mission.missionTemplate.retrievedAt) {
+          if (!this.mission || this.mission.missionTemplate || !this.mission.missionTemplate.retrievedAt) {
             this.$q.loading.show({
               message: `Loading template ${this.params.missionTplId} ...`,
               messageColor: 'black',
