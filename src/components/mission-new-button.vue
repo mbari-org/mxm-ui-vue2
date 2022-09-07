@@ -100,7 +100,6 @@
       missionId: '',
       description: null,
       schedType: 'ASAP',
-      arguments: [],
       startDate: null,
       endDate: null
     }),
@@ -156,7 +155,6 @@
         this.assetId = ''
         this.missionId = ''
         this.description = null
-        this.arguments = []
         this.schedType = 'ASAP'
         this.startDate = null
         this.endDate = null

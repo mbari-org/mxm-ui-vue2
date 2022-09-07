@@ -3,7 +3,7 @@
     filled
     dense
     class="bg-light-blue-1 col-auto"
-    v-model="assedId"
+    v-model="assetId"
     :options="theOptions"
     use-input
     input-debounce="0"
@@ -40,7 +40,7 @@
 
     data() {
       return {
-        assedId: this.value,
+        assetId: this.value,
         theOptions: [],
       }
     },
