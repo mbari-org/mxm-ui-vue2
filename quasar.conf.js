@@ -102,7 +102,7 @@ module.exports = function (ctx) {
       // some reason, similarly as described here: https://github.com/quasarframework/quasar/issues/6923.)
 
       // https: true,
-      // port: 8080,
+      port: 8055,
       open: true // opens browser window automatically
     },
 
